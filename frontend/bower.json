@@ -34,7 +34,10 @@
     "paper-card": "PolymerElements/paper-card#^1.1.4",
     "paper-tabs": "^1.7.0",
     "paper-menu": "^1.2.2",
-    "d3-sunburst": "*"
+    "d3-sunburst": "*",
+    "ajax": "^2.1.2",
+    "iron-ajax": "^1.4.3",
+    "paper-autocomplete": "1.1.6"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0",

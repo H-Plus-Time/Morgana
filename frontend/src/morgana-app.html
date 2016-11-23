@@ -89,7 +89,7 @@
     <!-- this app-route manages the top-level routes -->
     <app-route
         route="{{route}}"
-        pattern="/:view"
+        pattern="/:page"
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
     <iron-media-query query="max-width: 767px" query-matches="{{smallScreen}}"></iron-media-query>
@@ -100,7 +100,7 @@
             </app-toolbar>
             <iron-selector role="navigation" class="drawer-list" role="navigation">
                 <template is="dom-repeat" items="{{menuItems}}">
-                    <a href="#/{{item.href}}">{{item.text}}</a>
+                    <a href="/#/{{item.href}}">{{item.text}}</a>
                 </template>
             </iron-selector>
         </app-drawer>
@@ -114,7 +114,7 @@
                     <paper-tabs>
                         <template is="dom-repeat" items="{{menuItems}}">
                             <paper-tab link>
-                              <a class="link" href="#/{{item.href}}">{{item.text}}</a>
+                              <a class="link" href="/#/{{item.href}}">{{item.text}}</a>
                             </paper-tab>
                         </template>
                     </paper-tabs>
@@ -125,13 +125,13 @@
                 </app-toolbar>
             </app-header>
             <div class="content">
-              <iron-pages selected="{{routeData.view}}"
+              <iron-pages selected="[[page]]"
               attr-for-selected="name"
               fallback-selection="404"
               role="main">
                 <morgana-sunburst name="sunburst">
                 </morgana-sunburst>
-                <morgana-network name="network">
+                <morgana-network name="network" data="[[networkData]]">
                 </morgana-network>
                 <morgana-view404 name="404">
                 </morgana-view404>
@@ -178,6 +178,7 @@
 
       _pageChanged: function(page) {
         // Load page import on demand. Show 404 page if fails
+        console.log(page);
         var resolvedPageUrl = this.resolveUrl('morgana-' + page + '.html');
         this.importHref(resolvedPageUrl, null, this._showPage404, true);
       },
@@ -205,7 +206,9 @@
         var variables = e.detail.ancestors;
         fetch('/api/network').then(resp => resp.json())
         .then(function(network) {
-          Morgana.network.display.bind(this.$$('morgana-network'))(network)
+          console.log(network);
+          console.log(this.$$('morgana-network'));
+          this.networkData = network;
         }.bind(this))
         .then(() => this.set('route.path', '/network') )
       },
